@@ -1,0 +1,257 @@
+/*
+ * jQuery FlexSlider v1.8
+ * http://flex.madebymufffin.com
+ *
+ * Copyright 2011, Tyler Smith
+ * Free to use under the MIT license.
+ * http://www.opensource.org/licenses/mit-license.php
+ */
+ #container {width: 80%; max-width: 800px; margin: 0 auto;}
+/* Browser Resets */
+.flex-container a:active,
+.flexslider a:active {outline: none;}
+.slides,
+.flex-control-nav,
+.flex-direction-nav {margin: 0; padding: 0; list-style: none;} 
+
+/* FlexSlider Necessary Styles
+*********************************/ 
+.flexslider {width: 100%; margin: 0; padding: 0;}
+.flexslider .slides > li {display: none;} /* Hide the slides before the JS is loaded. Avoids image jumping */
+.flexslider .slides img {max-width: 100%; display: block; width:100%; }
+.flex-pauseplay span {text-transform: capitalize;}
+
+/* Clearfix for the .slides element */
+.slides:after {content: "."; display: block; clear: both; visibility: hidden; line-height: 0; height: 0;} 
+html[xmlns] .slides {display: block;} 
+* html .slides {height: 1%;}
+
+/* No JavaScript Fallback */
+/* If you are not using another script, such as Modernizr, make sure you
+ * include js that eliminates this class on page load */
+.no-js .slides > li:first-child {display: block;}
+
+
+/* FlexSlider Default Theme
+*********************************/
+.flexslider { position: relative; zoom: 1;}
+.flexslider .slides {zoom: 1;}
+.flexslider .slides > li {position: relative; background-position:center center; background-repeat:no-repeat; background-size:cover;}
+/* Suggested container for "Slide" animation setups. Can replace this with your own, if you wish */
+.flex-container {zoom: 1; position: relative;}
+.flexslider .slides li { /*height:642px; background-repeat:no-repeat; background-position:center; background-size:cover;*/ }
+.flexslider .slides li img { width:100%; float:left; }
+
+/* Caption style */
+/* IE rgba() hack */
+.flex-caption { background:none; zoom: 1; }
+.flex-caption { width:346px; height:144px; position:absolute; left:0px; bottom:22%; text-align:left; background:url(../pdtimg/banner-caption-bg.png) no-repeat; }
+.flex-caption span.logotxt { float:left; width:100%; text-align:center; padding:0px; margin:0px; font-size:0px; line-height:0px; }
+.flex-caption span.logotxt img { float:none; display:inline-block; border:1px solid #daa724; padding:8px 25px; width:auto; }
+.flex-caption h1 { float:left; width:100%; font-family: 'Roboto', sans-serif; color:#e35ba3; font-size:42px; font-weight:300; line-height:42px; text-transform:uppercase; padding:24px 25px 20px; }
+.flex-caption h1 strong { font-weight:700; color:#f53b54; }
+.flex-caption p { clear:left; width:100%; font-size:18px; color:#333333; font-weight:300; line-height:24px; text-align:center; padding:0px; }
+.flex-caption a.slide-btn { display:inline-block; background:#daa724; font-size:16px; color:#ffffff; font-weight:700; text-transform:uppercase; text-align:center; line-height:40px; padding:0 25px; margin:15px 0px 0px; border:2px solid #ffffff; 
+-webkit-border-radius:2px; -moz-border-radius:2px; -khtml-border-radius:2px; border-radius:2px;
+-webkit-transition: All 0.5s ease; -moz-transition: All 0.5s ease; -o-transition: All 0.5s ease; -ms-transition: All 0.5s ease; transition: All 0.5s ease;
+}
+.flex-caption a.slide-btn:hover { background:#ffffff; color:#daa724; border:2px solid #daa724 }
+
+.flex-caption.caption2 span.logotxt img { background: rgba(255, 255, 255, 0.3); }
+.flex-caption.caption2 h1 { text-shadow: 0 1px 5px rgba(0, 0, 0, 1); color:#ffffff }
+.flex-caption.caption2 p { text-shadow: 0 0 3px rgba(0, 0, 0, 1); color:#ffffff }
+
+/* Direction Nav */
+.flex-direction-nav { display:block; }
+.flex-direction-nav li a {width:30px; height:49px; margin:-24px 0 0 0; display: block; z-index:100; background: url(../pdtimg/slide-arrow.png) no-repeat 0 0; position: absolute; top: 50%; cursor: pointer; text-indent: -99999px;}
+.flex-direction-nav li .flex-next {background-position:-30px 0; right:5px;}
+.flex-direction-nav li .flex-prev {left:5px;}
+.flex-direction-nav li .flex-next:hover {background-position:-30px -49px; }
+.flex-direction-nav li .flex-prev:hover {background-position:0 -49px;}
+.flex-direction-nav li .disabled {opacity:.3; filter:alpha(opacity=30); cursor: default;}
+
+/* Control Nav */
+.flex-control-nav {width: 100%; position: absolute; bottom:15px; z-index:100; text-align:center; }
+.flex-control-nav li {margin:0 4px; display: inline-block; zoom: 1; *display: inline;}
+.flex-control-nav li a {width:12px; height:12px; display: block; background:#acacac; font-size:0px; line-height:0px; cursor: pointer; text-indent: -99999px; -webkit-border-radius:50%; -moz-border-radius:50%; -khtml-border-radius:50%; border-radius:50%;  }
+.flex-control-nav li a:hover, .flex-control-nav li a.flex-active { background:#232f3e; }
+
+.flexslider .slides { overflow: hidden; }
+.flex-caption span.logotxt{
+	-webkit-transform: translateY(-200px);
+	-moz-transform: translateY(-200px);
+	transform: translateY(-200px);
+	opacity:0;
+}
+.flex-caption {
+	-webkit-transform: translateX(-200px);
+	-moz-transform: translateX(-200px);
+	transform: translateX(-200px);
+	opacity:0;
+}
+.flex-caption h1 {
+	-webkit-transform: translateX(-400px);
+	-moz-transform: translateX(-400px);
+	transform: translateX(-400px);
+	opacity:0;
+}
+.flex-caption p {
+	-webkit-transform: translateX(500px);
+	-moz-transform: translateX(500px);
+	transform: translateX(500px);
+	opacity:0;
+}
+.flex-caption a.slide-btn { opacity:0; }
+
+.flex-active-slide .flex-caption span.logotxt {
+-webkit-animation:logotxt ease-in 1;
+-moz-animation:logotxt ease-in 1;
+-o-animation:logotxt ease-in 1;
+animation:logotxt ease-in 1;
+-webkit-animation-fill-mode:forwards;
+-moz-animation-fill-mode:forwards;
+-o-animation-fill-mode:forwards;
+animation-fill-mode:forwards;
+-webkit-animation-duration:.8s;
+-moz-animation-duration:.8s;
+-o-animation-duration:.8s;
+animation-duration:.8s;
+}
+@-webkit-keyframes logotxt {
+	0% { opacity: 0; -webkit-transform: translateY(-200px); }
+	100% { opacity: 1; -webkit-transform: translateY(0);  }
+}
+@-moz-keyframes logotxt { 
+	0% { opacity: 0; -moz-transform: translateY(-200px); }
+	100% { opacity: 1; -moz-transform: translateY(0); }
+}
+@-o-keyframes logotxt {
+	0% { opacity: 0; -o-transform: translateY(-200px); }
+	100% { opacity: 1; -o-transform: translateY(0); }
+}
+@keyframes logotxt {
+	0% { opacity: 0; transform: translateY(-200px); }
+	100% { opacity: 1; transform: translateY(0); }
+}
+
+.flex-active-slide .flex-caption  {
+-webkit-animation:leftright ease-in 1;
+-moz-animation:leftright ease-in 1;
+-o-animation:leftright ease-in 1;
+animation:leftright ease-in 1;
+-webkit-animation-fill-mode:forwards;
+-moz-animation-fill-mode:forwards;
+-o-animation-fill-mode:forwards;
+animation-fill-mode:forwards;
+-webkit-animation-duration:1.4s;
+-moz-animation-duration:1.4s;
+-o-animation-duration:1.4s;
+animation-duration:1.4s;
+
+}
+.flex-active-slide .flex-caption h1 {
+-webkit-animation:rightleft ease-in 1;
+-moz-animation:rightleft ease-in 1;
+-o-animation:rightleft ease-in 1;
+animation:rightleft ease-in 1;
+-webkit-animation-fill-mode:forwards;
+-moz-animation-fill-mode:forwards;
+-o-animation-fill-mode:forwards;
+animation-fill-mode:forwards;
+-webkit-animation-duration:2s;
+-moz-animation-duration:2s;
+-o-animation-duration:2s;
+animation-duration:2s;
+
+}
+@-webkit-keyframes leftright {
+	0% { opacity: 0; -webkit-transform: translateX(-400px); }
+	55% { opacity: 0; -webkit-transform: translateX(-400px); }
+	100% { opacity: 1; -webkit-transform: translateX(0);  }
+}
+@-moz-keyframes leftright { 
+	0% { opacity: 0; -moz-transform: translateX(-400px); }
+	55% { opacity: 0; -moz-transform: translateX(-400px); }
+	100% { opacity: 1; -moz-transform: translateX(0); }
+}
+@-o-keyframes leftright {
+	0% { opacity: 0; -o-transform: translateX(-400px); }
+	55% { opacity: 0; -o-transform: translateX(-400px); }
+	100% { opacity: 1; -o-transform: translateX(0); }
+}
+@keyframes leftright {
+	0% { opacity: 0; transform: translateX(-400px); }
+	55% { opacity: 0; transform: translateX(-400px); }
+	100% { opacity: 1; transform: translateX(0); }
+}
+
+.flex-active-slide .flex-caption p {
+-webkit-animation:rightleft ease-in 1;
+-moz-animation:rightleft ease-in 1;
+-o-animation:rightleft ease-in 1;
+animation:rightleft ease-in 1;
+-webkit-animation-fill-mode:forwards;
+-moz-animation-fill-mode:forwards;
+-o-animation-fill-mode:forwards;
+animation-fill-mode:forwards;
+-webkit-animation-duration:1.8s;
+-moz-animation-duration:1.8s;
+-o-animation-duration:1.8s;
+animation-duration:1.8s;
+}
+@-webkit-keyframes rightleft {
+	0% { opacity: 0; -webkit-transform: translateX(400px); }
+	55% { opacity:0; -webkit-transform: translateX(400px); }
+	100% { opacity: 1; -webkit-transform: translateY(0); }
+}
+@-moz-keyframes rightleft { 
+	0% { opacity: 0; -moz-transform: translateX(400px); }
+	55% { opacity: 0; -moz-transform: translateX(400px); }
+	100% { opacity: 1; -moz-transform: translateY(0); }
+}
+@-o-keyframes rightleft {
+	0% { opacity: 0; -o-transform: translateX(400px); }
+	55% { opacity: 0; -o-transform: translateX(400px); }
+	100% { opacity: 1; -o-transform: translateY(0); }
+}
+@keyframes rightleft {
+	0% { opacity: 0; transform: translateX(400px); }
+	55% { opacity: 0; transform: translateX(400px); }
+	100% { opacity: 1; transform: translateY(0); }
+}
+
+.flex-active-slide a.slide-btn {
+opacity: 0;
+-webkit-animation:fadeInBtn ease-in 1;
+-moz-animation:fadeInBtn ease-in 1;
+-o-animation:fadeInBtn ease-in 1;
+animation:fadeInBtn ease-in 1;
+-webkit-animation-fill-mode:forwards;
+-moz-animation-fill-mode:forwards;
+-o-animation-fill-mode:forwards;
+animation-fill-mode:forwards;
+-webkit-animation-duration:2.5s;
+-moz-animation-duration:2.5s;
+-o-animation-duration:2.5s;
+animation-duration:2.5s;
+}
+@-webkit-keyframes fadeInBtn {
+	0% { opacity: 0; }
+	75% { opacity: 0; }
+	100% { opacity: 1; }
+}
+@-moz-keyframes fadeInBtn { 
+	0% { opacity: 0; }
+	75% { opacity: 0; }
+	100% { opacity: 1; }
+}
+@-o-keyframes fadeInBtn {
+	0% { opacity: 0; }
+	65% { opacity: 0; }
+	100% { opacity: 1; }
+}
+@keyframes fadeInBtn {
+	0% { opacity: 0; }
+	75% { opacity: 0; }
+	100% { opacity: 1; }
+}
